@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-amplify": "^3.3.14",
     "react": "*",
     "react-dom": "*"
   },

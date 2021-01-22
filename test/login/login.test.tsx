@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { Login } from './login';
+import { Login } from '../../src/login/login';
 
 
 describe('Login component tests', () => {
