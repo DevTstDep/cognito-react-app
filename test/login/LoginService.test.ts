@@ -1,10 +1,17 @@
+import { LoginService } from "../../src/login/LoginService";
 
 
 
-describe('LoginService test suite', ()=>{
+describe('LoginService test suite', () => {
 
-    test('initial test', ()=>{
+    let loginService:LoginService;
 
+    beforeEach(()=>{
+        loginService = new LoginService();
     });
+
+    test('initial test', async () => {
+        await loginService.login('asd', 'def');
+    }); 
 
 })
