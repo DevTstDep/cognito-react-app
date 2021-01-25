@@ -1,4 +1,5 @@
 import { LoginService } from "../../src/login/LoginService";
+import * as config from "../../config.json";
 
 
 
@@ -12,15 +13,15 @@ describe('LoginService test suite', () => {
 
     test.skip('signUp test', async () => {
         await loginService.signUp(
-            'sefu',
-            '1234567',
-            'xxx@gmail.com'
+            config.test.username,
+            config.test.password,
+            config.test.email
         )
     });
     test('login', async () => {
         await loginService.login(
-            'sefu',
-            '1234567'
+            config.test.username,
+            config.test.password
         )
     })
 
