@@ -1,11 +1,18 @@
 import { LoginService } from "../../src/login/LoginService";
 import * as config from "../../config.json";
+import { CognitoUser } from '@aws-amplify/auth';
+import * as axios from 'axios';
+
+axios.default.defaults.validateStatus = function () {
+    return true;
+}
 
 
 
 describe('LoginService test suite', () => {
 
     let loginService: LoginService;
+    let user: CognitoUser;
 
     beforeEach(() => {
         loginService = new LoginService();
@@ -18,11 +25,23 @@ describe('LoginService test suite', () => {
             config.test.email
         )
     });
-    test('login', async () => {
-        await loginService.login(
+    test('login user', async () => {
+        user = await loginService.login(
             config.test.username,
             config.test.password
+        );
+    });
+    test('calls with user credentials', async () => {
+        const response = await axios.default.get(
+            config.api.invokeUrl,
+            {
+                headers: {
+                    'Authorization': user.getSignInUserSession().getIdToken().getJwtToken()
+                }
+            }
         )
-    })
+        console.log(123);
+
+    });
 
 })
