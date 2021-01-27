@@ -4,17 +4,25 @@ import * as config from "../../config.json";
 
 Amplify.configure({
     Auth: {
-      mandatorySignIn: true,
-      region: config.cognito.REGION,
-      userPoolId: config.cognito.USER_POOL_ID,
-      userPoolWebClientId: config.cognito.APP_CLIENT_ID
+        mandatorySignIn: true,
+        region: config.cognito.REGION,
+        userPoolId: config.cognito.USER_POOL_ID,
+        userPoolWebClientId: config.cognito.APP_CLIENT_ID,
+        authenticationFlowType: "USER_PASSWORD_AUTH"
     }
-  });
+});
 
 export class LoginService {
 
     public async login(userName: string, password: string): Promise<boolean> {
-        const user = await Auth.signIn(userName, password)
+
+        //Login phase:
+        const user = await Auth.signIn(userName, password);
+
+        // AWS identity credentials:
+        
+
+
         return false;
     }
 
