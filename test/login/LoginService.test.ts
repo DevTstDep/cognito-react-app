@@ -43,5 +43,12 @@ describe('LoginService test suite', () => {
         console.log(123);
 
     });
+    test.only('get AWS temporary credentials',async ()=>{
+        user = await loginService.login(
+            config.test.username,
+            config.test.password
+        );
+        await loginService.getAwsCredentials(user);
+    });
 
 })

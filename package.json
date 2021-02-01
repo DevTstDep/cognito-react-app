@@ -12,22 +12,24 @@
   "license": "ISC",
   "dependencies": {
     "aws-amplify": "^3.3.14",
+    "aws-sdk": "^2.833.0",
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "*",
     "@testing-library/react": "*",
+    "@types/aws-sdk": "^2.7.0",
     "@types/jest": "*",
     "@types/node": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
+    "axios": "^0.21.1",
     "jest": "*",
     "ts-jest": "*",
     "ts-loader": "*",
     "typescript": "*",
     "webpack": "*",
-    "webpack-cli": "*",
-    "axios": "^0.21.1"
+    "webpack-cli": "*"
   }
 }
