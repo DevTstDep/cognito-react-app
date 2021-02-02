@@ -1,4 +1,5 @@
 import { LoginService } from "../../src/login/LoginService";
+import { DataService } from "../../src/services/DataService";
 import * as config from "../../config.json";
 import { CognitoUser } from '@aws-amplify/auth';
 import * as axios from 'axios';
@@ -48,7 +49,11 @@ describe('LoginService test suite', () => {
             config.test.username,
             config.test.password
         );
-        await loginService.getAwsCredentials(user);
+       const credentials =  await loginService.getAwsCredentials(user);
+       const dataService: DataService = new DataService();
+       dataService.updateCredentials(credentials);
+       const s3Result = await dataService.listBuckets();
+       console.log(123);
     });
 
 })

@@ -3,7 +3,7 @@ import Amplify from "aws-amplify";
 import { CognitoUser } from '@aws-amplify/auth';
 import * as config from "../../config.json";
 import * as AWS from 'aws-sdk';
-import { CredentialsOptions } from "aws-sdk/lib/credentials";
+import { Credentials, CredentialsOptions } from "aws-sdk/lib/credentials";
 
 AWS.config.region = config.cognito.REGION;
 
@@ -36,25 +36,28 @@ export class LoginService {
         return false;
     };
 
-    public async getAwsCredentials(user: CognitoUser) {
-        const cognitoIdentityPool = `cognito-idp.${config.cognito.REGION}.amazonaws.com/${config.cognito.IDENTITY_POOL_ID}`;
-        var creds = new AWS.CognitoIdentityCredentials({
+    public async getAwsCredentials(user: CognitoUser): Promise<AWS.Credentials> {
+        const cognitoIdentityPool = `cognito-idp.${config.cognito.REGION}.amazonaws.com/${config.cognito.USER_POOL_ID}`;
+ 
+        const creds = new AWS.CognitoIdentityCredentials({
             IdentityPoolId: config.cognito.IDENTITY_POOL_ID,
             Logins: {
-                cognitoIdentityPool: user.getSignInUserSession().getIdToken().getJwtToken()
+                [cognitoIdentityPool]: user.getSignInUserSession().getIdToken().getJwtToken()
             }
-        })
-        const awsCredentials = await this.getCredentialsPromise();
-        console.log(5);
+        }, {
+            region: config.cognito.REGION
+        });
+        await this.refreshCredentials(creds);
+        return creds;
     }
 
-    private async getCredentialsPromise():Promise<AWS.Credentials | CredentialsOptions>{
+    private async refreshCredentials(creds): Promise<void> {
         return new Promise((resolve, reject) => {
-            AWS.config.getCredentials((err, data)=>{
+            (creds as Credentials).refresh(err => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(data);
+                    resolve()
                 }
             });
         })
