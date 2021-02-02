@@ -51,8 +51,12 @@ describe('LoginService test suite', () => {
         );
        const credentials =  await loginService.getAwsCredentials(user);
        const dataService: DataService = new DataService();
-       dataService.updateCredentials(credentials);
-       const s3Result = await dataService.listBuckets();
+//       dataService.updateCredentials(credentials);
+       try {
+        const s3Result = await dataService.listBuckets();
+       } catch (error) {
+        console.log(123);
+       }
        console.log(123);
     });
 

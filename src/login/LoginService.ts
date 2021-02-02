@@ -36,10 +36,10 @@ export class LoginService {
         return false;
     };
 
-    public async getAwsCredentials(user: CognitoUser): Promise<AWS.Credentials> {
+    public async getAwsCredentials(user: CognitoUser): Promise<void> {
         const cognitoIdentityPool = `cognito-idp.${config.cognito.REGION}.amazonaws.com/${config.cognito.USER_POOL_ID}`;
  
-        const creds = new AWS.CognitoIdentityCredentials({
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
             IdentityPoolId: config.cognito.IDENTITY_POOL_ID,
             Logins: {
                 [cognitoIdentityPool]: user.getSignInUserSession().getIdToken().getJwtToken()
@@ -47,13 +47,12 @@ export class LoginService {
         }, {
             region: config.cognito.REGION
         });
-        await this.refreshCredentials(creds);
-        return creds;
+        await this.refreshCredentials();
     }
 
-    private async refreshCredentials(creds): Promise<void> {
+    private async refreshCredentials(): Promise<void> {
         return new Promise((resolve, reject) => {
-            (creds as Credentials).refresh(err => {
+            (AWS.config.credentials as Credentials).refresh(err => {
                 if (err) {
                     reject(err);
                 } else {
