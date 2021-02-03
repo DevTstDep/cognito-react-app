@@ -44,20 +44,16 @@ describe('LoginService test suite', () => {
         console.log(123);
 
     });
-    test.only('get AWS temporary credentials',async ()=>{
+    test.only('get AWS temporary credentials', async () => {
         user = await loginService.login(
             config.test.username,
             config.test.password
         );
-       const credentials =  await loginService.getAwsCredentials(user);
-       const dataService: DataService = new DataService();
-//       dataService.updateCredentials(credentials);
-       try {
-        const s3Result = await dataService.listBuckets();
-       } catch (error) {
+        const credentials = await loginService.getAwsCredentials(user);
+        const dataService: DataService = new DataService();
+        //       dataService.updateCredentials(credentials);
+        const s3Result = await dataService.createBucket();
         console.log(123);
-       }
-       console.log(123);
     });
 
 })
