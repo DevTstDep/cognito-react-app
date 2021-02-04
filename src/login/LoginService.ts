@@ -22,6 +22,9 @@ export class LoginService {
 
     public async login(userName: string, password: string): Promise<CognitoUser> {
         const user = await Auth.signIn(userName, password) as CognitoUser;
+        // Auth.updateUserAttributes(user, {
+        //     'aaa':'aaw'
+        // })
         return user;
     }
 

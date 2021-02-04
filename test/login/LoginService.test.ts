@@ -49,10 +49,9 @@ describe('LoginService test suite', () => {
             config.test.username,
             config.test.password
         );
-        const credentials = await loginService.getAwsCredentials(user);
+        await loginService.getAwsCredentials(user);
         const dataService: DataService = new DataService();
-        //       dataService.updateCredentials(credentials);
-        const s3Result = await dataService.createBucket();
+        const s3Result = await dataService.listBuckets();
         console.log(123);
     });
 
