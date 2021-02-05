@@ -22,9 +22,6 @@ export class LoginService {
 
     public async login(userName: string, password: string): Promise<CognitoUser> {
         const user = await Auth.signIn(userName, password) as CognitoUser;
-        // Auth.updateUserAttributes(user, {
-        //     'aaa':'aaw'
-        // })
         return user;
     }
 
@@ -39,9 +36,15 @@ export class LoginService {
         return false;
     };
 
+    public async updateUserAttribute(user: CognitoUser, attribute: {
+        [key: string]: string
+    }) {
+        await Auth.updateUserAttributes(user, attribute)
+    }
+
     public async getAwsCredentials(user: CognitoUser): Promise<void> {
         const cognitoIdentityPool = `cognito-idp.${config.cognito.REGION}.amazonaws.com/${config.cognito.USER_POOL_ID}`;
- 
+
         AWS.config.credentials = new AWS.CognitoIdentityCredentials({
             IdentityPoolId: config.cognito.IDENTITY_POOL_ID,
             Logins: {

@@ -32,7 +32,7 @@ describe('LoginService test suite', () => {
             config.test.password
         );
     });
-    test('calls with user credentials', async () => {
+    test.skip('calls with user credentials', async () => {
         const response = await axios.default.get(
             config.api.invokeUrl,
             {
@@ -44,11 +44,13 @@ describe('LoginService test suite', () => {
         console.log(123);
 
     });
-    test.only('get AWS temporary credentials', async () => {
-        user = await loginService.login(
-            config.test.username,
-            config.test.password
+    test('update user attributes', async () => {
+        await loginService.updateUserAttribute(user, {
+            ['Picture']: 'SomePictureUrl'
+        }
         );
+    });
+    test.skip('get AWS temporary credentials', async () => {
         await loginService.getAwsCredentials(user);
         const dataService: DataService = new DataService();
         const s3Result = await dataService.listBuckets();
