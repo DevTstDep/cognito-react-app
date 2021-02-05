@@ -1,7 +1,9 @@
 import { S3, config, AWSError } from 'aws-sdk';
 import * as appConfing from "../../config.json";
-import { basename} from 'path';
+import { basename } from 'path';
 import { createReadStream } from 'fs'
+import { v4 } from 'uuid';
+
 
 
 config.update({
@@ -13,15 +15,15 @@ export class DataService {
     private s3Client = new S3();
 
     public async uploadProfilePicture(filePath: string): Promise<string> {
-        const fileName = basename(filePath);
+        const fileName = v4() + basename(filePath);
         const fileStream = createReadStream(filePath);
-        await this.s3Client.upload({
+        const uploadResult = await this.s3Client.upload({
             Bucket: appConfing.cognito.PICTURES_BUCKET,
             Key: fileName,
-            Body: fileStream
+            Body: fileStream,
+            ACL: 'public-read'
         }).promise();
-        return `https://${appConfing.cognito.PICTURES_BUCKET}.s3-
-        ${appConfing.cognito.REGION}.amazonaws/${fileName}`;
+        return uploadResult.Location;
     }
 
     public async listBuckets(): Promise<S3.ListBucketsOutput | AWSError> {

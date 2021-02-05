@@ -14,7 +14,8 @@
     "aws-amplify": "^3.3.14",
     "aws-sdk": "^2.833.0",
     "react": "*",
-    "react-dom": "*"
+    "react-dom": "*",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "*",
@@ -24,6 +25,7 @@
     "@types/node": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
+    "@types/uuid": "^8.3.0",
     "axios": "^0.21.1",
     "jest": "*",
     "ts-jest": "*",
