@@ -5,7 +5,9 @@
   "cognito": {
     "REGION": "eu-west-1",
     "USER_POOL_ID": "",
-    "APP_CLIENT_ID": ""
+    "APP_CLIENT_ID": "",
+    "IDENTITY_POOL_ID": "",
+    "PICTURES_BUCKET": ""
   },
   "test":{
     "email": "",

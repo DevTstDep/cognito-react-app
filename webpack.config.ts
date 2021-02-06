@@ -1,12 +1,13 @@
-const path = require('path');
+import { resolve } from 'path';
+import { Configuration } from 'webpack';
 
-module.exports = {
+const config: Configuration = {
     mode: "production",
     entry: "./src/index.tsx",
     //    devtool: "inline-source-map",
     output: {
         filename: "bundle.js",
-        path: path.resolve(__dirname, 'dist')
+        path: resolve(__dirname, 'dist')
     },
     module: {
         rules: [
@@ -22,3 +23,5 @@ module.exports = {
         extensions: [".ts", ".tsx", ".js"]
     }
 }
+
+export default config;

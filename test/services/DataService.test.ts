@@ -28,7 +28,8 @@ describe('Data service test suite', () => {
     test('set profile picture', async () => {
         await loginService.updateUserAttribute(user, {
             picture: picUrl
-        })
+        });
+        console.log(123);
     });
 
 
