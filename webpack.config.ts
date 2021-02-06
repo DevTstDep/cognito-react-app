@@ -2,7 +2,7 @@ import { resolve } from 'path';
 import { Configuration } from 'webpack';
 
 const config: Configuration = {
-    mode: "production",
+    mode: "development",
     entry: "./src/index.tsx",
     //    devtool: "inline-source-map",
     output: {
