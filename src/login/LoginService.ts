@@ -1,9 +1,10 @@
 import { Auth } from "aws-amplify";
 import Amplify from "aws-amplify";
+// @ts-ignore
 import { CognitoUser } from '@aws-amplify/auth';
-import * as config from "../../config.json";
+import * as config from "../config.json";
 import * as AWS from 'aws-sdk';
-import { Credentials, CredentialsOptions } from "aws-sdk/lib/credentials";
+import { Credentials } from "aws-sdk/lib/credentials";
 
 AWS.config.region = config.cognito.REGION;
 
@@ -48,7 +49,7 @@ export class LoginService {
         AWS.config.credentials = new AWS.CognitoIdentityCredentials({
             IdentityPoolId: config.cognito.IDENTITY_POOL_ID,
             Logins: {
-                [cognitoIdentityPool]: user.getSignInUserSession().getIdToken().getJwtToken()
+                [cognitoIdentityPool]: user.getSignInUserSession()!.getIdToken().getJwtToken()
             }
         }, {
             region: config.cognito.REGION

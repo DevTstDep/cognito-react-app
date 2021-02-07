@@ -1,12 +1,15 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
 import { Login } from './login/login';
-ReactDOM.render(
-    <div className="wrapper">
-        <h1>Welcome to the best app ever!</h1>
-        <h2>Please login</h2>
-        <Login />
 
-    </div>,
-    document.querySelector('#root')
-)
+ReactDOM.render(
+  <div className="wrapper">
+  <h1>Welcome to the best app ever!</h1>
+  <h2>Please login</h2>
+  <Login />
+
+</div>,
+  document.getElementById('root')
+);
+

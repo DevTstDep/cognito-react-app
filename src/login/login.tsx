@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { LoginService } from './LoginService';
 
 interface CredentialsState {
     userName: string,
@@ -13,6 +14,8 @@ interface CustomEvent {
 
 export class Login extends React.Component<{}, CredentialsState> {
 
+    private loginService: LoginService = new LoginService();
+
     state: CredentialsState = {
         password: "",
         userName: "",
@@ -22,6 +25,18 @@ export class Login extends React.Component<{}, CredentialsState> {
 
     private async handleSubmit(event: React.SyntheticEvent) {
         event.preventDefault();
+        const result = await this.loginService.login(
+            this.state.userName,
+            this.state.password
+        )
+        this.setState({
+            loginAttempted: true
+        })
+        if (result) {
+            this.setState({
+                isLoggedIn: true
+            })
+        }
     }
 
     private setPassword(event: CustomEvent) {

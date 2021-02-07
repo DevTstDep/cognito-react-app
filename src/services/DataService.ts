@@ -1,5 +1,5 @@
 import { S3, config, AWSError } from 'aws-sdk';
-import * as appConfing from "../../config.json";
+import * as appConfig from "../config.json";
 import { basename } from 'path';
 import { createReadStream } from 'fs'
 import { v4 } from 'uuid';
@@ -7,7 +7,7 @@ import { v4 } from 'uuid';
 
 
 config.update({
-    region: appConfing.cognito.REGION,
+    region: appConfig.cognito.REGION,
 });
 
 export class DataService {
@@ -18,7 +18,7 @@ export class DataService {
         const fileName = v4() + basename(filePath);
         const fileStream = createReadStream(filePath);
         const uploadResult = await this.s3Client.upload({
-            Bucket: appConfing.cognito.PICTURES_BUCKET,
+            Bucket: appConfig.cognito.PICTURES_BUCKET,
             Key: fileName,
             Body: fileStream,
             ACL: 'public-read'
