@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LoginService } from './LoginService';
+import { AuthService } from './AuthService';
 
 interface CredentialsState {
     userName: string,
@@ -14,7 +14,7 @@ interface CustomEvent {
 
 export class Login extends React.Component<{}, CredentialsState> {
 
-    private loginService: LoginService = new LoginService();
+    private authService: AuthService = new AuthService();
 
     state: CredentialsState = {
         password: "",
@@ -25,7 +25,7 @@ export class Login extends React.Component<{}, CredentialsState> {
 
     private async handleSubmit(event: React.SyntheticEvent) {
         event.preventDefault();
-        const result = await this.loginService.login(
+        const result = await this.authService.login(
             this.state.userName,
             this.state.password
         )

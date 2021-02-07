@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { Login } from './login/login';
+import { Login } from './auth/login';
 
 ReactDOM.render(
   <div className="wrapper">
