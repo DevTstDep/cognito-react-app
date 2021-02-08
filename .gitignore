@@ -21,3 +21,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+config.json
+dist/bundle.js
+dist/bundle.js.LICENSE.txt
