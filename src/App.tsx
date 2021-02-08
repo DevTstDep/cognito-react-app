@@ -21,7 +21,9 @@ export class App extends React.Component {
                         <AppNavbar userName='sefu' />
                         <Switch>
                             <Route exact path='/' component={Home} />
-                            <Route exact path='/login' component={Login} />
+                            <Route exact path='/login'>
+                                <Login authService={this.authService} />
+                            </Route>
                         </Switch>
                     </div>
                 </BrowserRouter>
