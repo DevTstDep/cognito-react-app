@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AuthService } from './AuthService';
+import { AuthService } from '../services/AuthService';
 
 interface CredentialsState {
     userName: string,
@@ -12,9 +12,7 @@ interface CustomEvent {
     target: HTMLInputElement
 }
 
-export class Login extends React.Component<{}, CredentialsState> {
-
-    private authService: AuthService = new AuthService();
+export class Login extends React.Component<{authService: AuthService}, CredentialsState> {
 
     state: CredentialsState = {
         password: "",
@@ -25,7 +23,7 @@ export class Login extends React.Component<{}, CredentialsState> {
 
     private async handleSubmit(event: React.SyntheticEvent) {
         event.preventDefault();
-        const result = await this.authService.login(
+        const result = await this.props.authService.login(
             this.state.userName,
             this.state.password
         )
@@ -59,6 +57,7 @@ export class Login extends React.Component<{}, CredentialsState> {
 
         return (
             <div>
+                <h2>Please login</h2>
                 <form data-test="login-form" onSubmit={e => this.handleSubmit(e)}>
                     <input data-test="login-input" name="login" value={this.state.userName} onChange={e => this.setUserName(e)} /><br />
                     <input data-test="password-input" name="password" value={this.state.password} onChange={e => this.setPassword(e)} type="password" /><br />
