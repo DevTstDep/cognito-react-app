@@ -1,17 +1,9 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { Login } from './auth/login';
-import { AuthService } from './services/AuthService';
+import { App } from './App';
 
-
-const zuthService = new AuthService();
 ReactDOM.render(
-  <div className="wrapper">
-  <h1>Welcome to the best app ever!</h1>
-  <Login authService={zuthService}/>
-
-</div>,
+  <App />,
   document.getElementById('root')
 );
 
