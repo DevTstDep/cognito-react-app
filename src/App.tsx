@@ -9,6 +9,7 @@ import { CognitoUser } from "@aws-amplify/auth";
 
 interface AppState {
     user: CognitoUser | undefined;
+    userName: string | undefined;
 }
 
 export class App extends React.Component<{}, AppState> {
@@ -19,14 +20,17 @@ export class App extends React.Component<{}, AppState> {
     constructor(props) {
         super(props);
         this.state = {
-            user: undefined
+            user: undefined,
+            userName: undefined
         }
         this.setCognitoUser = this.setCognitoUser.bind(this);
     }
 
     private setCognitoUser(user: CognitoUser) {
+        const cognitoUserName = user.getUsername();
         this.setState({
-            user: user
+            user: user,
+            userName: cognitoUserName
         })
         console.log('Setting user to:')
         console.log(this.state.user)
@@ -37,7 +41,7 @@ export class App extends React.Component<{}, AppState> {
             <div className="wrapper">
                 <BrowserRouter>
                     <div>
-                        <AppNavbar userName='sefu' />
+                        <AppNavbar userName={this.state.userName} />
                         <Switch>
                             <Route exact path='/' component={Home} />
                             <Route exact path='/login'>
