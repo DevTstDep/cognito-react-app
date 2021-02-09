@@ -2,10 +2,11 @@ import React from "react";
 import { Login } from "./components/auth/login";
 import { AuthService } from "./services/AuthService";
 import { DataService } from "./services/DataService";
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import { AppNavbar } from "./components/Navbar";
 import { Home } from "./components/Home";
 import { CognitoUser } from "@aws-amplify/auth";
+import history from './history';
 
 interface AppState {
     user: CognitoUser | undefined;
@@ -39,7 +40,7 @@ export class App extends React.Component<{}, AppState> {
     render() {
         return (
             <div className="wrapper">
-                <BrowserRouter>
+                <Router history={history}>
                     <div>
                         <AppNavbar userName={this.state.userName} />
                         <Switch>
@@ -49,7 +50,7 @@ export class App extends React.Component<{}, AppState> {
                             </Route>
                         </Switch>
                     </div>
-                </BrowserRouter>
+                </Router>
             </div>
         )
     }

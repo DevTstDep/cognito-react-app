@@ -1,6 +1,7 @@
 import { CognitoUser } from '@aws-amplify/auth';
 import { Component, SyntheticEvent } from 'react';
 import { AuthService } from '../../services/AuthService';
+import history from '../../history';
 
 interface CredentialsState {
     userName: string,
@@ -13,11 +14,13 @@ interface CustomEvent {
     target: HTMLInputElement
 }
 
+interface ILoginProps {
+    authService: AuthService,
+    setCognitoUser: (user: CognitoUser) => void
+}
+
 export class Login extends Component<
-    {
-        authService: AuthService,
-        setCognitoUser: (user: CognitoUser) => void
-    },
+    ILoginProps,
     CredentialsState> {
 
     state: CredentialsState = {
@@ -41,6 +44,7 @@ export class Login extends Component<
                 isLoggedIn: true
             })
             this.props.setCognitoUser(result);
+            history.push('/')
         }
     }
 
