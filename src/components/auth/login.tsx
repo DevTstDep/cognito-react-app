@@ -1,3 +1,4 @@
+import { CognitoUser } from '@aws-amplify/auth';
 import { Component, SyntheticEvent } from 'react';
 import { AuthService } from '../../services/AuthService';
 
@@ -12,7 +13,12 @@ interface CustomEvent {
     target: HTMLInputElement
 }
 
-export class Login extends Component<{ authService: AuthService }, CredentialsState> {
+export class Login extends Component<
+    {
+        authService: AuthService,
+        setCognitoUser: (user: CognitoUser) => void
+    },
+    CredentialsState> {
 
     state: CredentialsState = {
         password: "",
@@ -34,6 +40,7 @@ export class Login extends Component<{ authService: AuthService }, CredentialsSt
             this.setState({
                 isLoggedIn: true
             })
+            this.props.setCognitoUser(result);
         }
     }
 
