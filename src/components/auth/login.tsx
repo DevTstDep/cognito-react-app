@@ -44,7 +44,7 @@ export class Login extends Component<
                 isLoggedIn: true
             })
             this.props.setCognitoUser(result);
-            history.push('/')
+            history.push('/profile')
         }
     }
 

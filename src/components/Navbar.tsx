@@ -14,6 +14,7 @@ export class AppNavbar extends Component<{ userName: string | undefined }>{
         return <div className="topnav">
             <Link to="/">home</Link>
             <Link to="/home">some stuff</Link>
+            <Link to="/profile">profile</Link>
             {loginLogOut}
         </div>
     }

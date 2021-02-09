@@ -7,6 +7,7 @@ import { AppNavbar } from "./components/Navbar";
 import { Home } from "./components/Home";
 import { CognitoUser } from "@aws-amplify/auth";
 import history from './history';
+import { Profile } from "./components/Profile";
 
 interface AppState {
     user: CognitoUser | undefined;
@@ -47,6 +48,9 @@ export class App extends React.Component<{}, AppState> {
                             <Route exact path='/' component={Home} />
                             <Route exact path='/login'>
                                 <Login authService={this.authService} setCognitoUser={this.setCognitoUser} />
+                            </Route>
+                            <Route exact path='/profile' >
+                                <Profile user={this.state.user}/>
                             </Route>
                         </Switch>
                     </div>
