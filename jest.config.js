@@ -8,5 +8,8 @@ module.exports = {
     ],
     testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
     moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-    testEnvironment: "node"
+    testEnvironment: "jsdom",
+    moduleNameMapper: {
+        "\\.(css|scss)$": "<rootDir>/src/styleMock.ts"
+    }
 };
