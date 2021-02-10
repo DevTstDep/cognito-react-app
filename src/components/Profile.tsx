@@ -50,10 +50,27 @@ export class Profile extends Component<IProfileProps, IProfileState>{
     private renderUserAttributes() {
         const userAttributes = this.state.userAttributes;
         const rows: any[] = [];
+        let hasPicture = false;
         for (const userAttribute of userAttributes) {
-            rows.push(<tr>{userAttribute.Name} {userAttribute.Value}</tr>)
+            if (userAttribute.Name == 'picture') {
+                rows.push(<tr id='imageRow'>
+                    <img src={userAttribute.Value} />
+                </tr>)
+                hasPicture = true
+            }
         }
-        return <table>
+        if (!hasPicture) {
+            rows.push(<tr>Please upload a profile picture</tr>)
+        }
+        for (const userAttribute of userAttributes) {
+            if (userAttribute.Name != 'picture' && userAttribute.Name != 'sub') {
+                rows.push(<tr>
+                    <td> {userAttribute.Name} </td>
+                    <td> {userAttribute.Value} </td>
+                </tr>)
+            }
+        }
+        return <table className='profileTable'>
             {rows}
         </table>
     }
