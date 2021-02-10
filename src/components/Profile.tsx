@@ -12,6 +12,7 @@ interface IProfileState { }
 export class Profile extends Component<IProfileProps, IProfileState>{
 
     private getProfilePicture(): string | undefined {
+        const user = this.props.user;
         if (this.props.user) {
             return ''
         } else {

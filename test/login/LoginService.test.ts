@@ -1,6 +1,6 @@
-import { LoginService } from "../../src/login/LoginService";
+import { AuthService } from "../../src/services/AuthService";
 import { DataService } from "../../src/services/DataService";
-import * as config from "../../config.json";
+import * as config from "../../src/config.json";
 import { CognitoUser } from '@aws-amplify/auth';
 import * as axios from 'axios';
 
@@ -12,32 +12,34 @@ axios.default.defaults.validateStatus = function () {
 
 describe('LoginService test suite', () => {
 
-    let loginService: LoginService;
+    let authService: AuthService;
     let user: CognitoUser;
 
     beforeEach(() => {
-        loginService = new LoginService();
+        authService = new AuthService();
     });
 
-    test.skip('signUp test', async () => {
-        await loginService.signUp(
+    test('signUp test', async () => {
+        await authService.signUp(
             config.test.username,
             config.test.password,
             config.test.email
         )
     });
-    test('login user', async () => {
-        user = await loginService.login(
+    test.only('login user', async () => {
+        user = await authService.login(
             config.test.username,
             config.test.password
         );
+        console.log(1300);
+
     });
-    test.skip('calls with user credentials', async () => {
+    test('calls with user credentials', async () => {
         const response = await axios.default.get(
             config.api.invokeUrl,
             {
                 headers: {
-                    'Authorization': user.getSignInUserSession().getIdToken().getJwtToken()
+                    'Authorization': user.getSignInUserSession()!.getIdToken().getJwtToken()
                 }
             }
         )
@@ -45,13 +47,13 @@ describe('LoginService test suite', () => {
 
     });
     test('update user attributes', async () => {
-        await loginService.updateUserAttribute(user, {
+        await authService.updateUserAttribute(user, {
             ['Picture']: 'SomePictureUrl'
         }
         );
     });
-    test.skip('get AWS temporary credentials', async () => {
-        await loginService.getAwsCredentials(user);
+    test('get AWS temporary credentials', async () => {
+        await authService.getAwsCredentials(user);
         const dataService: DataService = new DataService();
         const s3Result = await dataService.listBuckets();
         console.log(123);
