@@ -53,8 +53,8 @@ export class Profile extends Component<IProfileProps, IProfileState>{
         let hasPicture = false;
         for (const userAttribute of userAttributes) {
             if (userAttribute.Name == 'picture') {
-                rows.push(<tr id='imageRow'>
-                    <img src={userAttribute.Value} />
+                rows.push(<tr><td colSpan={2}>
+                    <img src={userAttribute.Value} /></td>
                 </tr>)
                 hasPicture = true
             }
