@@ -49,10 +49,6 @@ export class Profile extends Component<IProfileProps, IProfileState>{
         if (files && files[0]) {
             console.log('File' + files[0].name);
             const result = await this.props.dataService.uploadProfileFromFile(files[0]);
-            await this.props.dataService.updateUserPicture(
-                this.props.user!,
-                result
-            )
             const newAttributes = [...this.state.userAttributes];
             const picAttribute = newAttributes.find(atr => atr.Name == 'picture');
             if (picAttribute) {
@@ -62,6 +58,20 @@ export class Profile extends Component<IProfileProps, IProfileState>{
                 userAttributes: newAttributes
             });
         }
+    }
+
+    private async confirmPictureChange() {
+        const picAttribute = this.state.userAttributes.find(atr => atr.Name == 'picture');
+        if (picAttribute && this.props.user) {
+            await this.props.dataService.updateUserPicture(this.props.user, picAttribute.Value)
+        }
+    }
+
+    private async rejectPictureChange() {
+        const userAttributes = await this.getUserAttributes();
+        this.setState({
+            userAttributes: userAttributes
+        })
     }
 
     private renderUserAttributes() {
@@ -80,7 +90,9 @@ export class Profile extends Component<IProfileProps, IProfileState>{
             rows.push(<tr key={'uploadPictureRow'}><td>Please upload a profile picture</td></tr>)
         } else {
             rows.push(<tr key={'changePicture'}>
-                <td>Change picture</td>
+                <td>
+                    <button onClick={() => this.confirmPictureChange()}>Change</button>
+                    <button onClick={() => this.rejectPictureChange()}>Revert</button></td>
                 <td><input type='file' onChange={e => this.setProfilePicture(e)}></input></td>
             </tr>)
         }
