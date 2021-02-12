@@ -44,15 +44,23 @@ export class Profile extends Component<IProfileProps, IProfileState>{
         })
     }
 
-    private async changeProfilePicAction(event: SyntheticEvent) {
-        console.log('changeProfilePicAction');
-    }
     private async setProfilePicture(event: CustomEvent) {
         const files = event.target.files
         if (files && files[0]) {
             console.log('File' + files[0].name);
             const result = await this.props.dataService.uploadProfileFromFile(files[0]);
-            console.log(result);
+            await this.props.dataService.updateUserPicture(
+                this.props.user!,
+                result
+            )
+            const newAttributes = [...this.state.userAttributes];
+            const picAttribute = newAttributes.find(atr => atr.Name == 'picture');
+            if (picAttribute) {
+                picAttribute.Value = result
+            }
+            this.setState({
+                userAttributes: newAttributes
+            });
         }
     }
 
@@ -71,8 +79,8 @@ export class Profile extends Component<IProfileProps, IProfileState>{
         if (!hasPicture) {
             rows.push(<tr key={'uploadPictureRow'}><td>Please upload a profile picture</td></tr>)
         } else {
-            rows.push(<tr key={'changePicture'}><td>
-                <button onClick={e => this.changeProfilePicAction(e)}>Change picture</button></td>
+            rows.push(<tr key={'changePicture'}>
+                <td>Change picture</td>
                 <td><input type='file' onChange={e => this.setProfilePicture(e)}></input></td>
             </tr>)
         }

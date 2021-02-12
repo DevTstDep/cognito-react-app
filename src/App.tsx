@@ -17,7 +17,7 @@ interface AppState {
 export class App extends React.Component<{}, AppState> {
 
     private authService: AuthService = new AuthService();
-    private dataService: DataService = new DataService();
+    private dataService: DataService = new DataService(this.authService);
 
     constructor(props) {
         super(props);
