@@ -28,14 +28,13 @@ export class App extends React.Component<{}, AppState> {
         this.setCognitoUser = this.setCognitoUser.bind(this);
     }
 
-    private setCognitoUser(user: CognitoUser) {
+    private async setCognitoUser(user: CognitoUser) {
         const cognitoUserName = user.getUsername();
         this.setState({
             user: user,
             userName: cognitoUserName
         })
-        console.log('Setting user to:')
-        console.log(this.state.user)
+        await this.authService.getAwsCredentials(user);
     };
 
     render() {
@@ -50,7 +49,7 @@ export class App extends React.Component<{}, AppState> {
                                 <Login authService={this.authService} setCognitoUser={this.setCognitoUser} />
                             </Route>
                             <Route exact path='/profile' >
-                                <Profile user={this.state.user}/>
+                                <Profile user={this.state.user} dataService={this.dataService}/>
                             </Route>
                         </Switch>
                     </div>

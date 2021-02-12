@@ -1,4 +1,4 @@
-import { S3, config, AWSError } from 'aws-sdk';
+import { S3, config, AWSError, CostExplorer } from 'aws-sdk';
 import * as appConfig from "../config.json";
 import { basename } from 'path';
 import { createReadStream } from 'fs'
@@ -12,7 +12,7 @@ config.update({
 
 export class DataService {
 
-    private s3Client = new S3();
+    private s3Client = new S3({region: appConfig.cognito.REGION});
 
     public async uploadProfilePicture(filePath: string): Promise<string> {
         const fileName = v4() + basename(filePath);
@@ -24,6 +24,24 @@ export class DataService {
             ACL: 'public-read'
         }).promise();
         return uploadResult.Location;
+    }
+
+    public async uploadProfileFromFile(file: File): Promise<string> {
+        const fileName = file.name;
+        try {
+            const uploadResult = await this.s3Client.upload({
+                Bucket: appConfig.cognito.PICTURES_BUCKET,
+                Key: fileName,
+                Body: file,
+                ACL: 'public-read'
+            }).promise();
+            return uploadResult.Location;
+        } catch (error) {
+            console.error('Error while uploading image:')
+            console.error((error as Error).message)
+            return (error as Error).message
+        }
+
     }
 
     public async listBuckets(): Promise<S3.ListBucketsOutput | AWSError> {

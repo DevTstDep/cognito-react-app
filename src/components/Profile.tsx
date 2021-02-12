@@ -1,11 +1,17 @@
 import { CognitoUser } from "@aws-amplify/auth";
 import { CognitoUserAttribute } from "amazon-cognito-identity-js";
-import { Component } from "react";
+import { Component, SyntheticEvent, FormEvent } from "react";
 import { Link } from "react-router-dom";
+import { DataService } from "../services/DataService";
 import './Profile.css';
 
+interface CustomEvent {
+    target: HTMLInputElement
+}
+
 interface IProfileProps {
-    user: CognitoUser | undefined
+    user: CognitoUser | undefined,
+    dataService: DataService
 }
 interface IProfileState {
     userAttributes: CognitoUserAttribute[]
@@ -16,15 +22,6 @@ export class Profile extends Component<IProfileProps, IProfileState>{
 
     state: IProfileState = {
         userAttributes: []
-    }
-
-    private getProfilePicture(): string | undefined {
-        const user = this.props.user;
-        if (this.props.user) {
-            return ''
-        } else {
-            return undefined
-        }
     }
 
     private async getUserAttributes(): Promise<CognitoUserAttribute[]> {
@@ -47,31 +44,48 @@ export class Profile extends Component<IProfileProps, IProfileState>{
         })
     }
 
+    private async changeProfilePicAction(event: SyntheticEvent) {
+        console.log('changeProfilePicAction');
+    }
+    private async setProfilePicture(event: CustomEvent) {
+        const files = event.target.files
+        if (files && files[0]) {
+            console.log('File' + files[0].name);
+            const result = await this.props.dataService.uploadProfileFromFile(files[0]);
+            console.log(result);
+        }
+    }
+
     private renderUserAttributes() {
         const userAttributes = this.state.userAttributes;
         const rows: any[] = [];
         let hasPicture = false;
         for (const userAttribute of userAttributes) {
             if (userAttribute.Name == 'picture') {
-                rows.push(<tr><td colSpan={2}>
+                rows.push(<tr key={userAttribute.Name}><td colSpan={2}>
                     <img src={userAttribute.Value} /></td>
                 </tr>)
                 hasPicture = true
             }
         }
         if (!hasPicture) {
-            rows.push(<tr>Please upload a profile picture</tr>)
+            rows.push(<tr key={'uploadPictureRow'}><td>Please upload a profile picture</td></tr>)
+        } else {
+            rows.push(<tr key={'changePicture'}><td>
+                <button onClick={e => this.changeProfilePicAction(e)}>Change picture</button></td>
+                <td><input type='file' onChange={e => this.setProfilePicture(e)}></input></td>
+            </tr>)
         }
         for (const userAttribute of userAttributes) {
             if (userAttribute.Name != 'picture' && userAttribute.Name != 'sub') {
-                rows.push(<tr>
+                rows.push(<tr key={userAttribute.Name}>
                     <td> {userAttribute.Name} </td>
                     <td> {userAttribute.Value} </td>
                 </tr>)
             }
         }
         return <table className='profileTable'>
-            {rows}
+            <tbody>{rows}</tbody>
         </table>
     }
 
@@ -84,7 +98,6 @@ export class Profile extends Component<IProfileProps, IProfileState>{
 
 
     render() {
-        const profilePicture = this.getProfilePicture();
         let profileSpace;
         if (this.props.user) {
             profileSpace =
