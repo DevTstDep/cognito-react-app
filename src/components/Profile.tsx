@@ -74,6 +74,30 @@ export class Profile extends Component<IProfileProps, IProfileState>{
         })
     }
 
+    private getUserGroups(): string[] | undefined {
+        const groups: string[] = this.props.user?.getSignInUserSession()?.getIdToken().payload['cognito:groups'];
+        if (groups.length > 0) {
+            return groups
+        } else {
+            return undefined
+        }
+    }
+
+    private renderUserGroups() {
+        const rowData: any[] = [];
+        const groups = this.getUserGroups();
+        if (groups) {
+            const rowValue = ''
+            groups.forEach(group => {
+                rowValue.concat(`[${group}]`);
+            })
+            rowData.push(<td>{rowValue}</td>)
+        }else {
+            rowData.push(<td>no groups</td>);
+        }
+         return rowData
+    }
+
     private renderUserAttributes() {
         const userAttributes = this.state.userAttributes;
         const rows: any[] = [];
@@ -104,6 +128,14 @@ export class Profile extends Component<IProfileProps, IProfileState>{
                 </tr>)
             }
         }
+        const userGroups = this.getUserGroups();
+        if (userGroups) {
+
+            rows.push(<tr key='groups'>
+                <td> Groups </td>
+                {this.renderUserGroups()}
+            </tr>)
+        }
         return <table className='profileTable'>
             <tbody>{rows}</tbody>
         </table>
@@ -122,14 +154,8 @@ export class Profile extends Component<IProfileProps, IProfileState>{
         if (this.props.user) {
             profileSpace =
                 <div id='profile-space'>
+                    <h1>{this.props.user.getUsername()}</h1>
                     {this.renderUserAttributes()}
-                    <h1>Nadia </h1>
-                    <p className="title">CEO & Founder, Example</p>
-                    <p>Harvard University</p>
-                    <a href="#"><i className="fa fa-dribbble"></i></a>
-                    <a href="#"><i className="fa fa-twitter"></i></a>
-                    <a href="#"><i className="fa fa-linkedin"></i></a>
-                    <a href="#"><i className="fa fa-facebook"></i></a>
                     <p><button>Contact</button></p>
                 </div>
         } else {

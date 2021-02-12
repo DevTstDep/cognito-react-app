@@ -10,8 +10,9 @@ describe('Data service test suite', () => {
     let picUrl: string;
 
     beforeAll(async () => {
-        dataService = new DataService();
         authService = new AuthService();
+        dataService = new DataService(authService);
+
         user = await authService.login(
             config.test.username,
             config.test.password
@@ -29,6 +30,10 @@ describe('Data service test suite', () => {
         await authService.updateUserAttribute(user, {
             picture: picUrl
         });
+    });
+    test.only('get groups', ()=>{
+        const groups:string[] = user.getSignInUserSession()?.getIdToken().payload['cognito:groups'];
+        console.log(123)
     });
 
 
