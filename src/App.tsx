@@ -8,6 +8,7 @@ import { Home } from "./components/Home";
 import { CognitoUser } from "@aws-amplify/auth";
 import history from './history';
 import { Profile } from "./components/Profile";
+import { Spaces } from "./components/spaces/Spaces";
 
 interface AppState {
     user: CognitoUser | undefined;
@@ -50,6 +51,9 @@ export class App extends React.Component<{}, AppState> {
                             </Route>
                             <Route exact path='/profile' >
                                 <Profile user={this.state.user} dataService={this.dataService}/>
+                            </Route>
+                            <Route exact path='/spaces' >
+                                <Spaces user={this.state.user} dataService={this.dataService}/>
                             </Route>
                         </Switch>
                     </div>

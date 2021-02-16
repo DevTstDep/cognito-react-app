@@ -15,6 +15,7 @@ export class AppNavbar extends Component<{ userName: string | undefined }>{
             <Link to="/">home</Link>
             <Link to="/home">some stuff</Link>
             <Link to="/profile">profile</Link>
+            <Link to="/spaces">spaces</Link>
             {loginLogOut}
         </div>
     }

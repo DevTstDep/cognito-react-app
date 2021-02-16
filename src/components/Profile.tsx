@@ -1,6 +1,6 @@
 import { CognitoUser } from "@aws-amplify/auth";
 import { CognitoUserAttribute } from "amazon-cognito-identity-js";
-import { Component, SyntheticEvent, FormEvent } from "react";
+import { Component} from "react";
 import { Link } from "react-router-dom";
 import { DataService } from "../services/DataService";
 import './Profile.css';
