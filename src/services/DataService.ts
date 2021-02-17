@@ -1,10 +1,11 @@
-import { S3, config, AWSError, CostExplorer } from 'aws-sdk';
+import { S3, config, AWSError } from 'aws-sdk';
 import * as appConfig from "../config.json";
 import { basename } from 'path';
-import { createReadStream } from 'fs'
 import { v4 } from 'uuid';
 import { AuthService } from './AuthService';
 import { CognitoUser } from '@aws-amplify/auth';
+import { ICreateSpaceState } from "../components/spaces/CreateSpace";
+import { createReadStream } from 'fs'
 
 
 
@@ -43,9 +44,36 @@ export class DataService {
     }
 
     public async uploadProfileFromFile(file: File): Promise<string> {
+        const result = await this.uploadPublicFile(file, appConfig.cognito.PICTURES_BUCKET);
+        return result;
+    }
+
+    public async createSpace(iCreateSpace: ICreateSpaceState): Promise<Response> {
+        try {
+            if (iCreateSpace.photo) {
+                const photoURL = await this.uploadPublicFile(iCreateSpace.photo, appConfig.cognito.SPACES_PHOTOS_BUCKET);
+                iCreateSpace.photoURL = photoURL;
+                iCreateSpace.photo = undefined;
+            }
+            const requestURL = appConfig.api.invokeUrl + 'spaces';
+            const requestOptions: RequestInit = {
+                method: 'POST',
+                body: JSON.stringify(iCreateSpace)
+            }
+            const requestResult = await fetch(requestURL, requestOptions);
+            console.log(requestResult);
+            return requestResult;
+        } catch (error) {
+            console.error(error);
+            return {} as any
+        }
+    }
+
+
+    private async uploadPublicFile(file: File, bucket: string): Promise<string> {
         const fileName = v4() + file.name;
         const uploadResult = await this.s3Client.upload({
-            Bucket: appConfig.cognito.PICTURES_BUCKET,
+            Bucket: bucket,
             Key: fileName,
             Body: file,
             ACL: 'public-read'

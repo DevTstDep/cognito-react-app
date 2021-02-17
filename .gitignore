@@ -24,3 +24,4 @@ yarn-error.log*
 config.json
 dist/bundle.js
 dist/bundle.js.LICENSE.txt
+src/config.json

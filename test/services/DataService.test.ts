@@ -2,6 +2,7 @@ import { AuthService } from "../../src/services/AuthService";
 import { DataService } from "../../src/services/DataService";
 import { CognitoUser } from '@aws-amplify/auth';
 import * as config from "../../src/config.json";
+import { readFileSync } from "fs";
 
 describe('Data service test suite', () => {
     let dataService: DataService;
@@ -31,15 +32,9 @@ describe('Data service test suite', () => {
             picture: picUrl
         });
     });
-    test.only('get groups', ()=>{
-        const groups:string[] = user.getSignInUserSession()?.getIdToken().payload['cognito:groups'];
+    test('get groups', () => {
+        const groups: string[] = user.getSignInUserSession()?.getIdToken().payload['cognito:groups'];
         console.log(123)
     });
-
-
-
-
-
-
 
 });
