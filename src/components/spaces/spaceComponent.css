@@ -1,0 +1,12 @@
+.spaceComponent {
+    display: inline-block;
+    width: 450px;
+    height: 500px;
+    margin: 5px;
+    border-style: solid;    
+    overflow: auto;
+}
+img {
+    max-width:100%;
+    max-height:100%;
+}
