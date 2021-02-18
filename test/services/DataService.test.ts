@@ -36,5 +36,8 @@ describe('Data service test suite', () => {
         const groups: string[] = user.getSignInUserSession()?.getIdToken().payload['cognito:groups'];
         console.log(123)
     });
+    test.only('test get spaces', async () => {
+        const result = await dataService.getSpaces();
+    })
 
 });

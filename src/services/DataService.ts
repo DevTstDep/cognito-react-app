@@ -6,6 +6,7 @@ import { AuthService } from './AuthService';
 import { CognitoUser } from '@aws-amplify/auth';
 import { ICreateSpaceState } from "../components/spaces/CreateSpace";
 import { createReadStream } from 'fs'
+import { Space } from '../components/spaces/Spaces';
 
 
 
@@ -20,6 +21,21 @@ export class DataService {
 
     constructor(authService: AuthService) {
         this.authService = authService
+    }
+
+    public async getSpaces(): Promise<Space[]> {
+        const requestURL = appConfig.api.invokeUrl + 'spaces';
+        const requestOptions: RequestInit = {
+            method: 'GET'
+        }
+        const requestResult = await fetch(requestURL, requestOptions);
+        const jsonResponse = await requestResult.json();
+        if (jsonResponse.Items) {
+            return jsonResponse.Items
+        } else {
+            return [];
+        }
+
     }
 
     public async updateUserPicture(user: CognitoUser, pictureUrl: string) {

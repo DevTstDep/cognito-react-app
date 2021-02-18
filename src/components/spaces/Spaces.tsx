@@ -4,8 +4,17 @@ import { Link } from "react-router-dom";
 import { DataService } from "../../services/DataService";
 import { SpaceComponent } from "./SpaceComponent";
 
+export interface Space {
+    name: string,
+    spaceId: string,
+    location: string,
+    description: string,
+    photoURL?: string
+}
 
-interface ISpacesState { }
+interface ISpacesState {
+    spaces: Space[]
+}
 interface ISpaceProps {
     user: CognitoUser | undefined,
     dataService: DataService
@@ -13,16 +22,28 @@ interface ISpaceProps {
 
 export class Spaces extends Component<ISpaceProps, ISpacesState> {
 
+    state: ISpacesState = { spaces: [] }
+
+    async componentDidMount() {
+        const spaces = await this.props.dataService.getSpaces();
+        this.setState({ spaces: spaces })
+    }
+    private renderSpaces() {
+        const rows: any[] = [];
+        for (const space of this.state.spaces) {
+            rows.push(
+                <SpaceComponent location={space.location} name={space.name} spaceId={space.spaceId} photoURL={space.photoURL}/>
+            )
+        }
+        return rows
+    }
+
     render() {
         return <div >
             <h2>
                 Spaces works!! You are {this.props.user?.getUsername()}
             </h2>
-            <SpaceComponent location='asdasd' name='aaaa' spaceId='asdasd' description='aaaa' photoURL='https://spaces-photos-ax9lbm0z.s3.eu-west-1.amazonaws.com/d4b5bb48-5561-42d3-b217-c6cdd05e2b1czz.jpg'/>
-            <SpaceComponent location='asdasd' name='aaaa' spaceId='asdasd' description='aaaa'/>
-            <SpaceComponent location='asdasd' name='aaaa' spaceId='asdasd' description='aaaa'/>
-            <SpaceComponent location='asdasd' name='aaaa' spaceId='asdasd' description='aaaa'/>
-            <SpaceComponent location='asdasd' name='aaaa' spaceId='asdasd' description='aaaa'/>
+            {this.renderSpaces()}
             <Link to="/createSpace">Create space</Link>
         </div>
     }
