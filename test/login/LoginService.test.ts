@@ -19,14 +19,14 @@ describe('LoginService test suite', () => {
         authService = new AuthService();
     });
 
-    test('signUp test', async () => {
+    test.skip('signUp test', async () => {
         await authService.signUp(
             config.test.username,
             config.test.password,
             config.test.email
         )
     });
-    test.only('login user', async () => {
+    test('login user', async () => {
         user = await authService.login(
             config.test.username,
             config.test.password
@@ -36,7 +36,7 @@ describe('LoginService test suite', () => {
     });
     test('calls with user credentials', async () => {
         const response = await axios.default.get(
-            config.api.invokeUrl,
+            config.api.invokeUrl + 'hello',
             {
                 headers: {
                     'Authorization': user.getSignInUserSession()!.getIdToken().getJwtToken()
@@ -46,15 +46,15 @@ describe('LoginService test suite', () => {
         console.log(123);
 
     });
-    test('update user attributes', async () => {
+    test.skip('update user attributes', async () => {
         await authService.updateUserAttribute(user, {
             ['Picture']: 'SomePictureUrl'
         }
         );
     });
-    test('get AWS temporary credentials', async () => {
+    test.skip('get AWS temporary credentials', async () => {
         await authService.getAwsCredentials(user);
-        const dataService: DataService = new DataService();
+        const dataService: DataService = new DataService(authService);
         const s3Result = await dataService.listBuckets();
         console.log(123);
     });

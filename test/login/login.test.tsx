@@ -12,7 +12,6 @@ describe('Login component tests', () => {
     })
     afterEach(() => {
         document.body.removeChild(container);
-        container = null;
     });
 
     it('can render login', () => {

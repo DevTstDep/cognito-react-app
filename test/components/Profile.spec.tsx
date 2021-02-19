@@ -24,7 +24,7 @@ describe('Profile component test suite', () => {
     beforeEach(() => {
         container = document.createElement('div');
         document.body.appendChild(container);
-        ReactDOM.render(<Profile user={user}/>, container);
+    //    ReactDOM.render(<Profile user={user}/>, container);
     });
     afterEach(() => {
         document.body.removeChild(container);

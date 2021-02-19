@@ -23,8 +23,26 @@ export class DataService {
         this.authService = authService
     }
 
-    public async reserveSpace(spaceId: string){
-        console.log('reserving space ' + spaceId );
+    public async reserveSpace(spaceIdz: string) {
+        const user = this.authService.getUser();
+        if (user) {
+            const requestBody = JSON.stringify({
+                spaceId: spaceIdz
+            })
+            const requestURL = appConfig.api.invokeUrl + 'reservations';
+            const requestOptions: RequestInit = {
+                method: 'POST',
+                body: requestBody,
+                headers: {
+                    'Authorization': user.getSignInUserSession()!.getIdToken().getJwtToken()
+                }
+            }
+            const requestResult = await fetch(requestURL, requestOptions);
+            const requestResultBody = await requestResult.json();
+            console.log(requestResultBody)
+        } else {
+            throw new Error("No authorized user!");
+        }
     }
 
     public async getSpaces(): Promise<Space[]> {
