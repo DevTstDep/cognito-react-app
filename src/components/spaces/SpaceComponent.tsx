@@ -1,5 +1,6 @@
 import { Component } from "react";
 import './spaceComponent.css';
+import genericImage from '../../assets/generic-image.jpg';
 
 interface ISpaceComponentState { }
 interface ISpaceComponentProps {
@@ -17,17 +18,16 @@ export class SpaceComponent extends Component<ISpaceComponentProps, ISpaceCompon
         if (this.props.photoURL) {
             return <img src={this.props.photoURL} />
         } else {
-            return null;
+            return <img src={genericImage}/>;
         }
     }
 
     render() {
         return <div className='spaceComponent'>
             {this.renderImage()}
-            {this.props.spaceId}<br />
-            {this.props.name}<br />
-            {this.props.location}<br />
-            {this.props.location}<br />
+            <label className='name'>{this.props.name}</label><br />
+            <label className='spaceId'>{this.props.spaceId}</label><br />
+            <label className='location'>{this.props.location}</label><br />
         </div>
     }
 
