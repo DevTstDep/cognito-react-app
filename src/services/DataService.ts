@@ -23,6 +23,10 @@ export class DataService {
         this.authService = authService
     }
 
+    public async reserveSpace(spaceId: string){
+        console.log('reserving space ' + spaceId );
+    }
+
     public async getSpaces(): Promise<Space[]> {
         const requestURL = appConfig.api.invokeUrl + 'spaces';
         const requestOptions: RequestInit = {

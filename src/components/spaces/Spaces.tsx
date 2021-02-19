@@ -32,7 +32,13 @@ export class Spaces extends Component<ISpaceProps, ISpacesState> {
         const rows: any[] = [];
         for (const space of this.state.spaces) {
             rows.push(
-                <SpaceComponent location={space.location} name={space.name} spaceId={space.spaceId} photoURL={space.photoURL} key={space.spaceId}/>
+                <SpaceComponent
+                    location={space.location}
+                    name={space.name}
+                    spaceId={space.spaceId}
+                    photoURL={space.photoURL}
+                    key={space.spaceId} 
+                    dataService={this.props.dataService}/>
             )
         }
         return rows
